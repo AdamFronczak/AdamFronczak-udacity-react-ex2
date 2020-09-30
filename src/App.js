@@ -106,7 +106,51 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
+		<Populairty />
       </div>
+    );
+  }
+}
+
+class Populairty extends Component {
+  render() {
+    var moviesWithLikes = Object.values(movies).map(m => ({
+      movieName: m.name,
+      likedBy: Object.values(profiles)
+      	.filter(p => p.favoriteMovieID == m.id)
+      	.map(p => users[p.userID].name)
+    }));
+               
+    return (
+      <div>
+      { moviesWithLikes.map(x =>
+          <React.Fragment>
+            <MovieName name={x.movieName} />
+            <LikedBy names={x.likedBy} />
+          </React.Fragment>
+      	)};
+      </div>
+    );
+  }
+}
+
+class MovieName extends Component {
+  render() {
+    return (
+      <h2>{this.props.name}</h2>
+    );
+  }
+}
+
+class LikedBy extends Component {
+  render() {
+    return (
+      <ul>
+      { this.props.names.length == 0 
+     	? <p>None of the current users liked this movie</p>
+      	: this.props.names.map((x, i) => <li key={i}>{x}</li>)
+      }
+      </ul>
     );
   }
 }
